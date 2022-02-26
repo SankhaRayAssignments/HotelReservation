@@ -91,7 +91,7 @@ class DefaultHotelService implements HotelService {
 
     Arrays.sort(myArray, hotelCompator);
     List<Hotel> result = new ArrayList<>();
-    int maxCount = Math.max(hotels.size(), 3);
+    int maxCount = Math.min(hotels.size(), 3);
     for (int i = 0; i < maxCount; i++) {
       result.add(myArray[i]);
     }
