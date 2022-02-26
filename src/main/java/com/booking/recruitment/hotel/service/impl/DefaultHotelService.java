@@ -43,14 +43,14 @@ class DefaultHotelService implements HotelService {
 
   @Override
   public Hotel getHotelById(Long hotelId) {
-    Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
+    Hotel hotel = hotelRepository.findById(hotelId).filter(hotel1 -> !hotel1.isDeleted()).orElse(null);
     return hotel;
   }
 
   @Override
   public Hotel deleteHotelById(final Long hotelId) {
     // SoftDelete
-    Optional<Hotel> optHotel = hotelRepository.findById(hotelId);
+    Optional<Hotel> optHotel = hotelRepository.findById(hotelId).filter(hotel -> !hotel.isDeleted());
     Hotel hotel = null;
     if (optHotel.isPresent()) {
       hotel = optHotel.get();
