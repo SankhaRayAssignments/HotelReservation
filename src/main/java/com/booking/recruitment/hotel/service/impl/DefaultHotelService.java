@@ -52,9 +52,10 @@ class DefaultHotelService implements HotelService {
     // SoftDelete
     Optional<Hotel> optHotel = hotelRepository.findById(hotelId);
     Hotel hotel = null;
-    if(optHotel.isPresent()) {
+    if (optHotel.isPresent()) {
       hotel = optHotel.get();
       hotel.setDeleted(true);
-  }
+    }
     return hotel;
+  }
 }
