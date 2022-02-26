@@ -95,7 +95,7 @@ class DefaultHotelService implements HotelService {
     for (int i = 0; i < maxCount; i++) {
       result.add(myArray[i]);
     }
-    return hotels;
+    return result;
 
   }
 
