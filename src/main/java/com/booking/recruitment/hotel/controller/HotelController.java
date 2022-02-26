@@ -2,8 +2,10 @@ package com.booking.recruitment.hotel.controller;
 
 import com.booking.recruitment.hotel.model.Hotel;
 import com.booking.recruitment.hotel.service.HotelService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,4 +31,19 @@ public class HotelController {
   public Hotel createHotel(@RequestBody Hotel hotel) {
     return hotelService.createNewHotel(hotel);
   }
+
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<String>
+  deleteById(@PathVariable Long id) throws JsonProcessingException {
+
+    Hotel hotel = hotelService.deleteHotelById(id);
+    if(hotel != null) {
+      return ResponseEntity.status(HttpStatus.ACCEPTED)
+              .body("Deleted Hotel with id: " + id);
+    } else {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT)
+              .body("Hotel not found with id:" + id);
+    }
+  }
+
 }
