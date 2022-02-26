@@ -52,7 +52,24 @@ public class HotelController {
     }
   }
 
-  @DeleteMapping("/delete/{id}")
+  @GetMapping("/search/{cityId}")
+  public ResponseEntity<String> getNearestHotels
+          (@PathVariable Long cityId,
+                  @RequestParam(value = "sortBy")
+                          String sortBy) throws JsonProcessingException {
+
+    List<Hotel> hotels = hotelService.getNearestHotelsByDistance(cityId);
+    if (hotels != null) {
+      String res = objectMapper.writeValueAsString(hotels);
+      return ResponseEntity.status(HttpStatus.OK)
+              .body(res);
+    } else {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT)
+              .body("Hotel not found with");
+    }
+  }
+
+  @DeleteMapping("{id}")
   public ResponseEntity<String>
   deleteById(@PathVariable Long id) throws JsonProcessingException {
 

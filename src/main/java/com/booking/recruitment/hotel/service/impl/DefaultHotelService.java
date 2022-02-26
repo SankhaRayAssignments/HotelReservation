@@ -80,14 +80,16 @@ class DefaultHotelService implements HotelService {
             .filter(hotel -> hotel.getCity().getId() == cityId)
             .collect(Collectors.toList());
 
-    Hotel[] myArray = new Hotel[hotels.size()];
-    hotels.toArray(myArray);
 
-    Arrays.sort(myArray, hotelCompator);
 
     if (hotels.size() == 0) {
       return null;
     }
+
+    Hotel[] myArray = new Hotel[hotels.size()];
+    hotels.toArray(myArray);
+
+    Arrays.sort(myArray, hotelCompator);
     List<Hotel> result = new ArrayList<>();
     int maxCount = Math.max(hotels.size(), 3);
     for (int i = 0; i < maxCount; i++) {
@@ -96,11 +98,5 @@ class DefaultHotelService implements HotelService {
     return hotels;
 
   }
-
-  private double isNearBy(final Hotel hotel) {
-    return  haversine(hotel.getCity().getCityCentreLatitude(), hotel.getCity().getCityCentreLatitude(),
-            hotel.getLatitude(), hotel.getLongitude()) ;
-  }
-
 
 }
