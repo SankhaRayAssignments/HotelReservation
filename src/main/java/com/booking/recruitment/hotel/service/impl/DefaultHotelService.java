@@ -55,6 +55,8 @@ class DefaultHotelService implements HotelService {
     if (optHotel.isPresent()) {
       hotel = optHotel.get();
       hotel.setDeleted(true);
+      hotelRepository.delete(hotel);
+      hotelRepository.save(hotel);
     }
     return hotel;
   }
