@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,14 +30,16 @@ public class HotelController {
     return hotelService.getAllHotels();
   }
 
-  @PostMapping
+  @PostMapping(
+          consumes = MediaType.APPLICATION_JSON_VALUE,
+          produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public Hotel createHotel(@RequestBody Hotel hotel) {
     return hotelService.createNewHotel(hotel);
   }
 
-  @GetMapping("/hotel/{id}")
-  public ResponseEntity<String> getCustomerRecord(@PathVariable Long id) throws JsonProcessingException {
+  @GetMapping("{id}")
+  public ResponseEntity<String> getHotelById(@PathVariable Long id) throws JsonProcessingException {
 
     Hotel hotel = hotelService.getHotelById(id);
     if (hotel != null) {
