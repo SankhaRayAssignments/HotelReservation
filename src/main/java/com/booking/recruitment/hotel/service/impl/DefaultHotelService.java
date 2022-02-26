@@ -7,8 +7,13 @@ import com.booking.recruitment.hotel.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,4 +65,42 @@ class DefaultHotelService implements HotelService {
     }
     return hotel;
   }
+
+  @Override
+  public List<Hotel> getNearestHotelsByDistance(Long cityId) {
+
+    Comparator<Hotel> hotelCompator
+            = Comparator.comparingDouble(Hotel::haversine);
+
+
+    // SoftDelete
+    List<Hotel> hotels = hotelRepository.findAll().stream()
+            .filter(hotel -> !hotel.isDeleted())
+            .filter(hotel -> hotel.getCity() != null)
+            .filter(hotel -> hotel.getCity().getId() == cityId)
+            .collect(Collectors.toList());
+
+    Hotel[] myArray = new Hotel[hotels.size()];
+    hotels.toArray(myArray);
+
+    Arrays.sort(myArray, hotelCompator);
+
+    if (hotels.size() == 0) {
+      return null;
+    }
+    List<Hotel> result = new ArrayList<>();
+    int maxCount = Math.max(hotels.size(), 3);
+    for (int i = 0; i < maxCount; i++) {
+      result.add(myArray[i]);
+    }
+    return hotels;
+
+  }
+
+  private double isNearBy(final Hotel hotel) {
+    return  haversine(hotel.getCity().getCityCentreLatitude(), hotel.getCity().getCityCentreLatitude(),
+            hotel.getLatitude(), hotel.getLongitude()) ;
+  }
+
+
 }
